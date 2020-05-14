@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+<ul>
+    <li>Total number of words: {{ word_count }}</li>
+    <li>Number of different words: {{ different_words }}</li>
+    <li>Number of sentences: {{ sentence_count }}</li>
+</ul>
+<h3>Longest sentence:</h3>
+<p>
+    {{ long_sent }}
+</p>
+<a href="{% url 'random' id=id %}"> Pick a random sentence </a>
+{% endblock %}
