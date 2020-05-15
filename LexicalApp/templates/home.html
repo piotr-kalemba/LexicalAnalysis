@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% block title %} Index {% endblock %}
+{% block title %} Home {% endblock %}
 
 {% block content %}
 <h3>The list of books available in the library:</h3>
 <ol>
 {% for book in books %}
-    <li><a href="{% url 'book' id=book.1 %}">{{ book.0 }}</a></li>
+    <li><a href="{% url 'book' id=book.id %}">{{ book.title }}</a></li>
     {% endfor %}
 </ol>
 {% endblock %}

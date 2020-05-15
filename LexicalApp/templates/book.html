@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} {{ title }} {% endblock %}
+{% block title %} {{ book.title }} {% endblock %}
 
 {% block content %}
 <ul>
@@ -11,5 +11,5 @@
 <p>
     {{ long_sent }}
 </p>
-<a href="{% url 'random' id=id %}"> Pick a random sentence </a>
+
 {% endblock %}

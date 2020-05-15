@@ -1,15 +1,11 @@
 import re
 import os
 import random
-
-
-def all_books(path):
-    return [filename for filename in os.listdir(path) if filename.endswith('.txt')]
+from django.conf import settings
 
 
 def get_path(book):
-    path = os.getcwd()
-    path += f'/LexicalApp/library/{book}'
+    path = os.path.join(settings.MEDIA_ROOT, f'{book.book.name}')
     return path
 
 
@@ -105,4 +101,5 @@ def sentence_len_freq(book):
 
     return [len([length for length in sentence_len if length in range(10 * index + 1, 10 * index + 11)])\
             for index in range(ranges_numb)]
+
 
