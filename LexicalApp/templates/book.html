@@ -35,6 +35,6 @@
     {% csrf_token %}
   <button type="submit">Pick again</button>
 </form>
-
+<a href="{% url 'plot' id=book.id %}">Show plot</a>
 <p><a href="{% url 'home' %}">Return to home</a></p>
 {% endblock %}
