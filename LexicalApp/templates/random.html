@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-{% block title %} Random sentence {% endblock %}
-
-{% block content %}
-<p>
-    {{ sentence }}
-</p>
-<a href="{% url 'random' id=id %}"> Pick again </a>
-{% endblock %}

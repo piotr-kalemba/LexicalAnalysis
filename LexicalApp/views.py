@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from . lexical_tools import get_total_number_of_words, get_number_of_different_words, \
-    get_number_of_sentences, get_longest_sentence, get_random_sentence
+    get_number_of_sentences, get_longest_sentences, get_random_sentence, get_content, how_many_words
 from .forms import BookForm
 from .models import Book
 
@@ -27,16 +27,19 @@ class HomeView(View):
 class BookView(View):
     def get(self, request, id):
         book = Book.objects.get(id=id)
-        word_count = int(get_total_number_of_words(book))
-        different_words = int(get_number_of_different_words(book))
-        sentence_count = int(get_number_of_sentences(book))
-        long_sent = get_longest_sentence(book)
+        content = get_content(book)
+        word_count = int(get_total_number_of_words(content))
+        different_words = int(get_number_of_different_words(content))
+        sentence_count = int(get_number_of_sentences(content))
+        long_sentences = get_longest_sentences(content)
+        rand_sent = get_random_sentence(content)
+        s1, s2, s3 = long_sentences
+        length = how_many_words
+        l1, l2, l3 = length(s1), length(s2), length(s3)
         context = {'word_count': word_count, 'different_words': different_words, 'sentence_count': sentence_count, \
-                   'long_sent': long_sent}
+                   'l1': l1, 'l2': l2, 'l3': l3, 's1': s1, 's2': s2, 's3': s3, 'rand_sent': rand_sent, 'book': book}
         return render(request, 'book.html', context)
 
 
-class RandomSentence(View):
-    pass
 
 

@@ -2,14 +2,39 @@
 {% block title %} {{ book.title }} {% endblock %}
 
 {% block content %}
+<h2>Stats of <i>{{ book.title }}</i> by {{ book.author }}</h2>
 <ul>
     <li>Total number of words: {{ word_count }}</li>
     <li>Number of different words: {{ different_words }}</li>
     <li>Number of sentences: {{ sentence_count }}</li>
 </ul>
-<h3>Longest sentence:</h3>
-<p>
-    {{ long_sent }}
-</p>
+<h3>Three longest sentences:</h3>
+<ol>
+  <li>The longest sentence of {{ l3 }} words:
+  <p>
+      <i>{{ s3 }}</i>
+  </p>
+  </li>
+    <li>The second longest sentence of {{ l2 }} words:
+  <p>
+      <i>{{ s2 }}</i>
+  </p>
+  </li>
+    <li>The third longest sentence of {{ l1 }} words:
+  <p>
+      <i>{{ s1 }}</i>
+  </p>
+  </li>
+</ol>
 
+<h3>Random sentence</h3>
+<p>
+    <i>{{ rand_sent }}</i>
+</p>
+<form method="get" action="#">
+    {% csrf_token %}
+  <button type="submit">Pick again</button>
+</form>
+
+<p><a href="{% url 'home' %}">Return to home</a></p>
 {% endblock %}
