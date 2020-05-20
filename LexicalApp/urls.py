@@ -5,5 +5,5 @@ urlpatterns = [
     path('home/', views.HomeView.as_view(), name='home'),
     path('upload/', views.UploadView.as_view(), name='upload'),
     path('book/<int:id>', views.BookView.as_view(), name='book'),
-    path('plot/<int:id>', views.PlotView.as_view(), name='plot'),
+    path('plot_freq/<int:id>', views.PlotFreqView.as_view(), name='plot-freq'),
 ]

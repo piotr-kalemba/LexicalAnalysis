@@ -1,12 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from . lexical_tools import get_total_number_of_words, get_number_of_different_words, \
-    get_number_of_sentences, get_longest_sentences, get_random_sentence, get_content, how_many_words
+    get_number_of_sentences, get_longest_sentences, get_random_sentence, get_content, how_many_words, sentence_len_freq
 from .forms import BookForm
 from .models import Book
-from .plots import create_bar_freq
-import io
-import urllib, base64
+from .plots import FreqChart
 
 
 class UploadView(View):
@@ -44,11 +42,15 @@ class BookView(View):
         return render(request, 'book.html', context)
 
 
-class PlotView(View):
+class PlotFreqView(View):
     def get(self, request, id):
         book = Book.objects.get(id=id)
-        create_bar_freq(book)
-        return redirect('home')
+        content = get_content(book)
+        seq = sentence_len_freq(content)
+        chart = FreqChart()
+        plot = chart.generate(seq)
+        return render(request, 'plot_freq.html', {'plot': plot})
+
 
 
 
