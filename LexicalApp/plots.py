@@ -16,6 +16,18 @@ class FreqChart:
         return self.chart.render(is_unicode=True)
 
 
+class VocabChart:
+    def __init__(self):
+        self.chart = pygal.StackedBar(print_values=True)
+        self.chart.title = 'Compare Book Lexicons'
+        self.chart.x_title = 'Book'
+        self.chart.y_title = 'Vocabulary Size'
 
+    def generate(self, titles, hist, common):
+        self.chart.x_labels = titles
+        stump = [common] * len(hist)
+        self.chart.add('Common Vocab', stump)
+        self.chart.add('Unique Vocab', hist)
+        return self.chart.render(is_unicode=True)
 
 

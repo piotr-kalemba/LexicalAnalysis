@@ -3,9 +3,14 @@
 
 {% block content %}
 <h3>The list of books available in the library:</h3>
+<form action="#" method="POST">
+    {% csrf_token %}
 <ol>
 {% for book in books %}
-    <li><a href="{% url 'book' id=book.id %}">{{ book.title }}</a></li>
+    <li><a href="{% url 'book' id=book.id %}">{{ book.title }}</a>
+        <input type="checkbox" name="books" value="{{ book.id }}"></li>
     {% endfor %}
 </ol>
+<input type="submit" value="Compare selected">
+</form>
 {% endblock %}

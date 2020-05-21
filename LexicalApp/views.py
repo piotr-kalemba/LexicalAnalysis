@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from . lexical_tools import get_total_number_of_words, get_number_of_different_words, \
-    get_number_of_sentences, get_longest_sentences, get_random_sentence, get_content, how_many_words, sentence_len_freq
+    get_number_of_sentences, get_longest_sentences, get_random_sentence, get_content, how_many_words, \
+    sentence_len_freq, get_common_words, get_unique_words
 from .forms import BookForm
 from .models import Book
-from .plots import FreqChart
+from .plots import FreqChart, VocabChart
 
 
 class UploadView(View):
@@ -24,6 +25,17 @@ class HomeView(View):
         books = Book.objects.all()
         return render(request, 'home.html', {'books': books})
 
+    def post(self, request):
+        book_ids = request.POST.getlist('books')
+        books = [Book.objects.get(id=i) for i in book_ids]
+        contents = [get_content(book) for book in books]
+        common = len(get_common_words(contents))
+        hist = [len(get_unique_words(content, contents)) for content in contents]
+        titles = [book.title for book in books]
+        chart = VocabChart()
+        plot = chart.generate(titles, hist, common)
+        return render(request, 'books.html', {'plot': plot})
+
 
 class BookView(View):
     def get(self, request, id):
@@ -34,11 +46,10 @@ class BookView(View):
         sentence_count = int(get_number_of_sentences(content))
         long_sentences = get_longest_sentences(content)
         rand_sent = get_random_sentence(content)
-        s1, s2, s3 = long_sentences
-        s_len = how_many_words
-        l1, l2, l3 = s_len(s1), s_len(s2), s_len(s3)
+        stl = [how_many_words(s) for s in long_sentences]
+        items = list(zip(long_sentences, stl))
         context = {'word_count': word_count, 'different_words': different_words, 'sentence_count': sentence_count, \
-                   'l1': l1, 'l2': l2, 'l3': l3, 's1': s1, 's2': s2, 's3': s3, 'rand_sent': rand_sent, 'book': book}
+                   'items': items, 'rand_sent': rand_sent, 'book': book}
         return render(request, 'book.html', context)
 
 
