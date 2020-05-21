@@ -79,6 +79,11 @@ def get_unique_words(content, contents):
     return list(unique_words)
 
 
+def get_number_of_unique_words(content, contents):
+    """the function returns the number of unique words in content but not in contents"""
+    return len(get_unique_words(content, contents))
+
+
 def get_number_of_sentences(content):
     """the function returns the number of sentences in the content of the book"""
     return len(get_all_sentences(content))

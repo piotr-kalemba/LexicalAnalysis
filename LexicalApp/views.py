@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from . lexical_tools import get_total_number_of_words, get_number_of_different_words, \
     get_number_of_sentences, get_longest_sentences, get_random_sentence, get_content, how_many_words, \
-    sentence_len_freq, get_common_words, get_unique_words
+    sentence_len_freq, get_common_words, get_number_of_unique_words
 from .forms import BookForm
 from .models import Book
 from .plots import FreqChart, VocabChart
@@ -30,7 +30,7 @@ class HomeView(View):
         books = [Book.objects.get(id=i) for i in book_ids]
         contents = [get_content(book) for book in books]
         common = len(get_common_words(contents))
-        hist = [len(get_unique_words(content, contents)) for content in contents]
+        hist = [get_number_of_unique_words(content, contents) for content in contents]
         titles = [book.title for book in books]
         chart = VocabChart()
         plot = chart.generate(titles, hist, common)
