@@ -2,19 +2,25 @@ import re
 import os
 import random
 from django.conf import settings
+from .handle_format import pdf_to_str
 
 
 def get_path(book):
     """the function returns the absolute path to the book from the library, provided it is in the media folder"""
-    path = os.path.join(settings.MEDIA_ROOT, f'{book.book.name}')
+    file_name = book.book.name
+    path = os.path.join(settings.MEDIA_ROOT, file_name)
     return path
 
 
 def get_content(book):
     """the function reads the content of the book and returns it as a string"""
     path = get_path(book)
-    with open(path, 'r') as f:
-        content = f.read()
+    ext = book.book.name.split('.')[-1]
+    if ext.lower() == 'pdf':
+        content = pdf_to_str(path)
+    else:
+        with open(path, 'r') as f:
+            content = f.read()
     return content
 
 

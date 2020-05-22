@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from . lexical_tools import get_total_number_of_words, get_number_of_different_words, \
+from .lexical_tools import get_total_number_of_words, get_number_of_different_words, \
     get_number_of_sentences, get_longest_sentences, get_random_sentence, get_content, how_many_words, \
     sentence_len_freq, get_common_words, get_number_of_unique_words
 from .forms import BookForm
