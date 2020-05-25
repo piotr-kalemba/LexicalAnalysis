@@ -3,7 +3,14 @@
 
 {% block content %}
  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+     {% csrf_token %}
+
+     {% if form.non_field.errors %}
+     {% for error in form.book.errors %}
+        {{ error|escape }}
+     {% endfor %}
+     {% endif %}
+
     {{ form.as_p }}
     <button type="submit">Upload</button>
   </form>

@@ -2,7 +2,7 @@ import re
 import os
 import random
 from django.conf import settings
-from .handle_format import pdf_to_str, test_format
+from .handle_format import pdf_to_str, get_format
 
 
 def get_path(book):
@@ -15,7 +15,7 @@ def get_path(book):
 def get_content(book):
     """the function reads the content of the book and returns it as a string"""
     path = get_path(book)
-    if test_format(path)[-3:] == 'pdf':
+    if get_format(path)[-3:] == 'pdf':
         content = pdf_to_str(path)
     else:
         with open(path, 'r') as f:

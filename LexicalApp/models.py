@@ -6,3 +6,6 @@ class Book(models.Model):
     author = models.CharField(max_length=128)
     book = models.FileField(upload_to='library/')
 
+    def __str__(self):
+        return self.title
+

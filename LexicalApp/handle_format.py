@@ -1,6 +1,7 @@
 import pdftotext
 import magic
 import io
+from django.core.exceptions import ValidationError
 
 
 def pdf_to_str(path):
@@ -10,8 +11,13 @@ def pdf_to_str(path):
         return ' '.join([str(page) for page in pdf_obj])
 
 
-def test_format(path):
+def get_format(path):
     return magic.from_file(path, mime=True)
 
-# application/pdf or text/plain formats are supported
+
+def type_validator(file):
+    filetype = magic.from_buffer(file.read()).lower()
+    if 'pdf' not in filetype and 'text' not in filetype:
+        raise ValidationError('Error! You are trying to upload a file with an unsupported type!')
+
 

@@ -16,8 +16,13 @@ class UploadView(View):
     def post(self, request):
         form = BookForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-        return redirect('home')
+            title = form.cleaned_data.get('title')
+            author = form.cleaned_data.get('author')
+            file = form.cleaned_data.get('book')
+            book = Book(title=title, author=author, book=file)
+            book.save()
+            return redirect('home')
+        return render(request, 'upload.html', {'form': form})
 
 
 class HomeView(View):
