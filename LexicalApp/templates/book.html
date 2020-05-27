@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 {% block title %} {{ book.title }} {% endblock %}
-
+{% block navbar %}
+  <nav class="navbar navbar-expand-sm bg-secondary text-white">
+       <ul class="navbar-nav">
+            <li class="nav-item">
+<a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+<a class='nav-link' href="{% url 'upload' %}">Upload</a>
+            </li>
+<li class="nav-item">
+    <a class='nav-link' href="{% url 'plot-freq' id=book.id %}">Show plot</a>
+</li>
+</ul>
+  </nav>
+{% endblock %}
 {% block content %}
 <h2>Stats of <i>{{ book.title }}</i> by {{ book.author }}</h2>
 <ul>
@@ -35,6 +49,6 @@
     {% csrf_token %}
   <button type="submit">Pick again</button>
 </form>
-<a href="{% url 'plot-freq' id=book.id %}">Show plot</a>
-<p><a href="{% url 'home' %}">Return to home</a></p>
+
+
 {% endblock %}
