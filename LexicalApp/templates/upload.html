@@ -4,15 +4,19 @@
 {% block content %}
  <form method="post" enctype="multipart/form-data">
      {% csrf_token %}
-
+    <div class="form-group col-md-6">
      {% if form.non_field.errors %}
      {% for error in form.book.errors %}
         {{ error|escape }}
      {% endfor %}
      {% endif %}
-
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
+        <container class="form-control mt-2 bg-secondary text-light">
+            <p><h3>Title</h3> {{ form.title }}</p>
+            <p><h3>Author</h3> {{ form.author }}</p>
+            <p>{{ form.book }} </p>
+            <button type="submit" class="btn" >Upload</button>
+        </container>
+    </div>
   </form>
 
 {% endblock %}

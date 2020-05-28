@@ -16,38 +16,39 @@
   </nav>
 {% endblock %}
 {% block content %}
-<h2>Stats of <i>{{ book.title }}</i> by {{ book.author }}</h2>
-<ul>
-    <li>Total number of words: {{ word_count }}</li>
-    <li>Number of different words: {{ different_words }}</li>
-    <li>Number of sentences: {{ sentence_count }}</li>
+    <div class="col-2-">
+<h2>Stats of <i>{{ book.title }}</i> by {{ book.author }}</h2></div>
+<ul class="list-group">
+    <li class="list-group-item text-danger bg-info">Total number of words: {{ word_count }}</li>
+    <li class="list-group-item text-danger bg-info">Number of different words: {{ different_words }}</li>
+    <li class="list-group-item text-danger bg-info">Number of sentences: {{ sentence_count }}</li>
 </ul>
-<h3>Three longest sentences:</h3>
-<ol>
-  <li>The longest sentence of {{ items.2.1 }} words:
-  <p>
-      <i>{{ items.2.0 }}</i>
+<h3 class="lm-2">Three longest sentences:</h3>
+<ol class="list-group text-white">
+  <li class="list-group-item bg-info">The longest sentence of {{ items.2.1 }} words:
+  <p class="font-italic">
+      {{ items.2.0 }}
   </p>
   </li>
-    <li>The second longest sentence of {{ items.1.1 }} words:
-  <p>
-      <i>{{ items.1.0 }}</i>
+    <li class="list-group-item bg-info">The second longest sentence of {{ items.1.1 }} words:
+  <p class="font-italic">
+      {{ items.1.0 }}
   </p>
   </li>
-    <li>The third longest sentence of {{ items.0.1 }} words:
-  <p>
-      <i>{{ items.0.0 }}</i>
+    <li class="list-group-item bg-info">The third longest sentence of {{ items.0.1 }} words:
+  <p class="font-italic">
+      {{ items.0.0 }}
   </p>
   </li>
 </ol>
 
-<h3>Random sentence</h3>
-<p>
-    <i>{{ rand_sent }}</i>
+<h3 class="lm-2">Random sentence</h3>
+<p class="text-white ml-3 font-italic">
+    {{ rand_sent }}
 </p>
 <form method="get" action="#">
     {% csrf_token %}
-  <button type="submit">Pick again</button>
+  <button type="submit" class="btn ml-3 mt-2">Pick again</button>
 </form>
 
 

@@ -7,13 +7,12 @@
     {% csrf_token %}
 <ul class="list-group" >
 {% for book in books %}
-    <li class="list-group-item">
+    <li class="list-group-item bg-info">
         <input type="checkbox" name="books" value="{{ book.id }}">
-        <a href="{% url 'book' id=book.id %}">{{ book.title }}</a>
+        <a class="text-white" href="{% url 'book' id=book.id %}">{{ book.title }}</a>
        </li>
     {% endfor %}
 </ul>
-
-   <button type="submit" class="btn btn-primary ml-3 mt-2">Compare selected</button>
+   <button type="submit" class="btn ml-3 mt-2">Compare selected</button>
 </form>
 {% endblock %}

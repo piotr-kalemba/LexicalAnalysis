@@ -32,7 +32,7 @@ class HomeView(View):
 
     def post(self, request):
         book_ids = request.POST.getlist('books')
-        if not book_ids:
+        if len(book_ids) <= 1:
             return redirect('home')
         books = [Book.objects.get(id=i) for i in book_ids]
         contents = [get_content(book) for book in books]
