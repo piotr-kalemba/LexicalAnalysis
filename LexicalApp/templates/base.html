@@ -7,10 +7,9 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="../static/custom/custom.css" />
+      <link rel="stylesheet" href="{% static 'css/bootstrap.css'  %}">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
 
     <title>{% block title %}{% endblock %}</title>
   </head>
@@ -23,6 +22,9 @@
             </li>
             <li class="nav-item">
 <a class='nav-link text-white' href="{% url 'upload' %}">Upload</a>
+            </li>
+           <li class="nav-item">
+<a class='nav-link text-white' href="{% url 'remove' %}">Remove</a>
             </li>
        </ul>
   </nav>

@@ -108,5 +108,5 @@ def sentence_len_freq(content):
     sentence_len = [how_many_words(sentence) for sentence in sentences]
     max_len = max(sentence_len)
     ranges_numb = max_len // 10 + 1
-    return [len([length for length in sentence_len if length in range(10 * index + 1, 10 * index + 11)])\
+    return [len([length for length in sentence_len if length in range(10 * index + 1, 10 * index + 11)]) \
             for index in range(ranges_numb)]

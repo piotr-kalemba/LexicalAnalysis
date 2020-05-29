@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.views import View
 from .lexical_tools import get_total_number_of_words, get_number_of_different_words, \
     get_number_of_sentences, get_longest_sentences, get_random_sentence, get_content, how_many_words, \
-    sentence_len_freq, get_common_words, get_number_of_unique_words
+    sentence_len_freq, get_common_words, get_number_of_unique_words, get_path
 from .forms import BookForm
 from .models import Book
 from .plots import FreqChart, VocabChart
+import os
 
 
 class UploadView(View):
@@ -68,6 +69,22 @@ class PlotFreqView(View):
         chart = FreqChart()
         plot = chart.generate(seq)
         return render(request, 'plot_freq.html', {'plot': plot})
+
+
+class RemoveView(View):
+    def get(self, request):
+        books = Book.objects.all()
+        return render(request, 'remove.html', {'books': books})
+
+    def post(self, request):
+        to_remove = request.POST.getlist('books')
+        if to_remove:
+            to_remove = [Book.objects.get(id=i) for i in to_remove]
+            for book in to_remove:
+                path = get_path(book)
+                os.remove(path)
+                book.delete()
+        return redirect('remove')
 
 
 

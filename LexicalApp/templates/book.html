@@ -4,13 +4,16 @@
   <nav class="navbar navbar-expand-sm bg-secondary text-white">
        <ul class="navbar-nav">
             <li class="nav-item">
-<a class="nav-link" href="{% url 'home' %}">Home</a>
+<a class="nav-link text-white" href="{% url 'home' %}">Home</a>
             </li>
             <li class="nav-item">
-<a class='nav-link' href="{% url 'upload' %}">Upload</a>
+<a class='nav-link text-white' href="{% url 'upload' %}">Upload</a>
+            </li>
+            <li class="nav-item">
+<a class='nav-link text-white' href="{% url 'remove' %}">Remove</a>
             </li>
 <li class="nav-item">
-    <a class='nav-link' href="{% url 'plot-freq' id=book.id %}">Show plot</a>
+    <a class='nav-link text-white' href="{% url 'plot-freq' id=book.id %}">Show plot</a>
 </li>
 </ul>
   </nav>
