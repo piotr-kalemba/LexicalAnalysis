@@ -23,11 +23,12 @@ class VocabChart:
         self.chart.x_title = 'Book'
         self.chart.y_title = 'Vocabulary Size'
 
-    def generate(self, titles, hist, common):
+    def generate(self, titles, hist_unique, common):
         self.chart.x_labels = titles
-        stump = [common] * len(hist)
+        stump = [common] * len(hist_unique)
         self.chart.add('Common Vocab', stump)
-        self.chart.add('Unique Vocab', hist)
+        # self.chart.add('Shared Vocab', hist_shared)
+        self.chart.add('Unique Vocab', hist_unique)
         return self.chart.render(is_unicode=True)
 
 
