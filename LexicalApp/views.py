@@ -35,13 +35,13 @@ class HomeView(View):
         if len(book_ids) <= 1:
             return redirect('home')
         books = [Book.objects.get(id=i) for i in book_ids]
-        lexicons = [set(get_all_words(get_content(book))) for book in books]
+        lexicons = [list(set(get_all_words(get_content(book)))) for book in books]
         common = len(get_common_words(lexicons))
-        hist_unique = [len(get_unique_words(k, lexicons)) for k in range(len(lexicons))]
-        # hist_shared = [len(lexicons[k]) - (common + hist_unique[k]) for k in range(len(lexicons))]
+        unique = [len(get_unique_words(k, lexicons)) for k in range(len(lexicons))]
+        shared = [len(lexicons[k]) - (common + unique[k]) for k in range(len(lexicons))]
         titles = [book.title for book in books]
         chart = VocabChart()
-        plot = chart.generate(titles, hist_unique, common)
+        plot = chart.generate(titles, unique, shared, common)
         return render(request, 'books.html', {'plot': plot})
 
 
@@ -69,7 +69,7 @@ class PlotFreqView(View):
         content = get_content(book)
         sentences = get_sentences(content)
         seq = sentence_len_freq(sentences)
-        chart = FreqChart()
+        chart = FreqChart(book.title)
         plot = chart.generate(seq)
         return render(request, 'plot_freq.html', {'plot': plot})
 

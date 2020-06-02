@@ -79,9 +79,9 @@ def get_random_sentence(sentences):
 
 def get_common_words(lexicons):
     """the function returns a list of words that are common for all the books from the list passed as the argument"""
-    common_words = lexicons[0]
+    common_words = set(lexicons[0][:])
     for vocabulary in lexicons[1:]:
-        common_words &= vocabulary
+        common_words &= set(vocabulary)
     return list(common_words)
 
 
@@ -89,7 +89,7 @@ def get_unique_words(k, lexicons):
     """the function returns a list of words that occur in the book (first argument) but not in the contents of any other
      of the books in the list passed as the second argument"""
     total_vocab = set()
-    lexicon = lexicons[k]
+    lexicon = set(lexicons[k])
     n = len(lexicons)
     for i in range(n):
         if i != k:

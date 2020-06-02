@@ -2,9 +2,9 @@ import pygal
 
 
 class FreqChart:
-    def __init__(self):
+    def __init__(self, title):
         self.chart = pygal.Bar()
-        self.chart.title = 'Sentence length frequencies'
+        self.chart.title = "Sentence length frequencies of '{}'.".format(title)
         self.chart.x_title = 'Sentence length'
         self.chart.y_title = 'Sentence frequency'
 
@@ -23,11 +23,11 @@ class VocabChart:
         self.chart.x_title = 'Book'
         self.chart.y_title = 'Vocabulary Size'
 
-    def generate(self, titles, hist_unique, common):
+    def generate(self, titles, hist_unique, hist_shared, common):
         self.chart.x_labels = titles
-        stump = [common] * len(hist_unique)
-        self.chart.add('Common Vocab', stump)
-        # self.chart.add('Shared Vocab', hist_shared)
+        hist_common = [common] * len(hist_unique)
+        self.chart.add('Common Vocab', hist_common)
+        self.chart.add('Shared Vocab', hist_shared)
         self.chart.add('Unique Vocab', hist_unique)
         return self.chart.render(is_unicode=True)
 
