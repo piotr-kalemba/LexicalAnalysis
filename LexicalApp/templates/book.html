@@ -20,13 +20,13 @@
 {% endblock %}
 {% block content %}
     <div class="col-2-">
-<h2>Stats of <i>{{ book.title }}</i> by {{ book.author }}</h2></div>
+<h2>&nbsp Stats of <i>{{ book.title }}</i> by {{ book.author }}</h2></div>
 <ul class="list-group">
     <li class="list-group-item text-danger bg-info">Total number of words: {{ word_count }}</li>
     <li class="list-group-item text-danger bg-info">Number of different words: {{ different_words }}</li>
     <li class="list-group-item text-danger bg-info">Number of sentences: {{ sentence_count }}</li>
 </ul>
-<h3 class="lm-2">Three longest sentences:</h3>
+<h3 class="lm-2">&nbsp Three longest sentences:</h3>
 <ol class="list-group text-white">
   <li class="list-group-item bg-info">The longest sentence of {{ items.2.1 }} words:
   <p class="font-italic">
@@ -45,7 +45,7 @@
   </li>
 </ol>
 
-<h3 class="lm-2">Random sentence</h3>
+<h3>&nbsp Random sentence</h3>
 <p class="text-white ml-3 font-italic">
     {{ rand_sent }}
 </p>

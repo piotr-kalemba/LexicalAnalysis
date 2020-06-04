@@ -4,19 +4,18 @@ import random
 from django.conf import settings
 from .handle_format import pdf_to_str, get_format
 
-COMMON_ABBR = ['a.m.', 'approx.', 'B.C.', 'cf.', 'e.g.', 'i.e.', 'Mr.', 'Mrs.', 'Ms.' 'p.a.', 'p.m.', 'St.', 'sq.',
-               'Dr.', 'Prof.', 'a.k.a', 'A.D.']
+COMMON_ABBR = ['approx.', 'cf.', 'Mr.', 'Mrs.', 'Ms.', 'St.', 'sq.', 'Dr.', 'Prof.']
 
 
 def get_path(book):
-    """the function returns the absolute path to the book from the library, provided it is in the media folder"""
+    """function returns the absolute path to the book from the library, provided it is in the media folder"""
     file_name = book.book.name
     path = os.path.join(settings.MEDIA_ROOT, file_name)
     return path
 
 
 def get_content(book):
-    """the function reads the content of the book and returns it as a string"""
+    """function reads the content of the book and returns it as a string"""
     path = get_path(book)
     if get_format(path)[-3:] == 'pdf':
         content = pdf_to_str(path)
@@ -27,7 +26,7 @@ def get_content(book):
 
 
 def get_all_words(content):
-    """the function returns a list of all running words in the content (with duplicates)"""
+    """function returns a list of all running words in the content (with duplicates)"""
     content = content.lower()
     words = re.findall(r'\b([\w]+-?)+\b', content)
     # the pattern for a word above matches strings like 'Alice', 'English-speaking', 'merry-go-round' but does not
@@ -36,35 +35,79 @@ def get_all_words(content):
 
 
 def how_many_words(sentence):
-    """it's an auxiliary function used for measuring the length of a sentence"""
+    """an auxiliary function used for measuring the length of a sentence"""
     return len(sentence.split())
 
 
-def replace(string, pattern, rep, start, end):
-    """ ... """
-    subst = re.sub(pattern, rep, string[start:end])
+def substitute(string, to_sub, sub_by, start, end):
+    """an auxiliary function that replaces every occurrence of to_sub for sub_by in the string between
+    start and end indices"""
+    subst = string[start:end].replace(to_sub, sub_by)
     return string[:start] + subst + string[end:]
 
 
-def shadow_acronyms(content):
-    """ ... """
-    ACRONYMS = {abbr: re.sub(r'\.', '#', abbr) for abbr in COMMON_ABBR}
-    pattern = r'\w[\w.]+'
-    for match_iter in re.finditer(pattern, content):
-        span = match_iter.span()
-        match = match_iter.group()
+def handle_acronyms(content):
+    """function tries to find all acronyms in the content and shadow periods in them so that they will not be
+    confused with full stops ending sentences"""
+    pattern = r"\w\.\w(\.\w?)*"
+    for item in re.finditer(pattern, content):
+        span = item.span()
+        content = substitute(content, ".", "@", span[0], span[1])
+
+    pattern = r"\w+\."
+    ACRONYMS = {acr: acr.replace(".", "@") for acr in COMMON_ABBR}
+    for itermatch in re.finditer(pattern, content):
+        span = itermatch.span()
+        match = itermatch.group()
         if match in ACRONYMS.keys():
-            content = replace(content, match, ACRONYMS[match], span[0], span[1])
+            content = substitute(content, match, ACRONYMS[match], span[0], span[1])
+
+    return content
+
+
+def shadow_invalid_stops(content):
+    """function tries to shadow all punctuation marks that signify the end of a sentence but are used in a reported
+    speech, which means they may not necessary count as the end of the sentence"""
+    content = handle_acronyms(content)
+
+    spans = []
+    pattern = r'{}'.format('"[A-Z].*?[.?!]"')
+
+    for item in re.finditer(pattern, content):
+        spans.append(item.span())
+
+    if spans:
+        for span in spans:
+            content = substitute(content, '.', '@', span[0], span[1] - 2)
+            content = substitute(content, '?', '&', span[0], span[1] - 2)
+            content = substitute(content, '!', '#', span[0], span[1] - 2)
+
+    spans = []
+    pattern = r'{}'.format('[.?!]"\s+[a-z]')
+
+    for item in re.finditer(pattern, content):
+        spans.append(item.span())
+
+    for span in spans:
+        content = substitute(content, '.', '@', span[0], span[0] + 2)
+        content = substitute(content, '?', '&', span[0], span[0] + 2)
+        content = substitute(content, '!', '#', span[0], span[0] + 2)
+
     return content
 
 
 def clean_sentence(sentence):
-    """ ... """
-    return re.sub(r'#', '.', sentence)
+    """function replaces shadowed punctuation marks back to the original marks"""
+    swap = zip(["#", "@", "&"], ["!", ".", "?"])
+    for pair in swap:
+        sentence = sentence.replace(pair[0], pair[1])
+    return sentence
 
 
 def get_sentences(content):
-    """ ... """
+    """function tries to find all sentences in the content; it draws on previous auxiliary functions to exclude
+    some false positives"""
+    content = shadow_invalid_stops(content)
     pattern = r'[A-Z][^.?!]+[.?!]'
     sentences = re.findall(pattern, content)
     sentences = [clean_sentence(sentence) for sentence in sentences]
@@ -72,13 +115,13 @@ def get_sentences(content):
 
 
 def get_random_sentence(sentences):
-    """the function returns a random sentence from the book content"""
+    """function returns a random sentence from the book content"""
     sentence = random.choice(sentences)
     return sentence
 
 
 def get_common_words(lexicons):
-    """the function returns a list of words that are common for all the books from the list passed as the argument"""
+    """function returns a list of words that are common for all the books from the list passed as the argument"""
     common_words = set(lexicons[0][:])
     for vocabulary in lexicons[1:]:
         common_words &= set(vocabulary)
@@ -86,7 +129,7 @@ def get_common_words(lexicons):
 
 
 def get_unique_words(k, lexicons):
-    """the function returns a list of words that occur in the book (first argument) but not in the contents of any other
+    """function returns a list of words that occur in the book (first argument) but not in the contents of any other
      of the books in the list passed as the second argument"""
     total_vocab = set()
     lexicon = set(lexicons[k])
@@ -99,13 +142,13 @@ def get_unique_words(k, lexicons):
 
 
 def get_longest_sentences(sentences, n=3):
-    """the function returns the longest sentence in the content"""
+    """function returns the longest sentence in the content"""
     sentences.sort(key=lambda s: how_many_words(s))
     return sentences[-n:]
 
 
 def sentence_len_freq(sentences):
-    """the function returns a list with the distribution of the sentence lengths in the content of the book for
+    """function returns a list with the distribution of the sentence lengths in the content of the book for
     sentence-length-ranges: [1,10], [11, 20], [21,30], etc"""
     sentence_len = [how_many_words(sentence) for sentence in sentences]
     max_len = max(sentence_len)

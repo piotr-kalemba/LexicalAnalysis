@@ -9,10 +9,10 @@ class FreqChart:
         self.chart.y_title = 'Sentence frequency'
 
     def generate(self, seq):
-        x_labels = [str(10 * i) for i in range(1, len(seq) + 1)]
-        if len(seq) < 50:
-            self.chart.x_labels = x_labels
-        self.chart.add('Freq', seq)
+        Seq = [(seq[i], i + 1) for i in range(len(seq)) if seq[i] > 0]
+        x_labels = [str(10 * Seq[i][1]) for i in range(len(Seq))]
+        self.chart.x_labels = x_labels
+        self.chart.add('Freq', [Seq[i][0] for i in range(len(Seq))])
         return self.chart.render(is_unicode=True)
 
 
