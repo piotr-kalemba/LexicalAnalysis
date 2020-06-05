@@ -1,0 +1,11 @@
+asgiref==3.2.7
+cycler==0.10.0
+Django==3.0.6
+kiwisolver==1.2.0
+pdftotext==2.1.4
+pygal==2.4.0
+pyparsing==2.4.7
+PyPDF2==1.26.0
+python-magic==0.4.18
+pytz==2020.1
+six==1.14.0
