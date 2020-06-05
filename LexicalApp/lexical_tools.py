@@ -67,11 +67,11 @@ def handle_acronyms(content):
 
 def shadow_invalid_stops(content):
     """function tries to shadow all punctuation marks that signify the end of a sentence but are used in a reported
-    speech, which means they may not necessary count as the end of the sentence"""
+    speech (between quotation marks), which means they may not count as the end of the sentence"""
     content = handle_acronyms(content)
 
     spans = []
-    pattern = r'{}'.format('"[A-Z].*?[.?!]"')
+    pattern = r'{}'.format('"[A-Z][^"]*[.?!]"')
 
     for item in re.finditer(pattern, content):
         spans.append(item.span())
