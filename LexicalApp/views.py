@@ -77,10 +77,10 @@ class BookSentView(View):
         stats[3] = stats[0] // stats[2]
         long_sentences = get_longest_sentences(sentences)
         rand_sent = get_random_sentence(sentences)
-        sentence = long_sentences[-num]
-        size = how_many_words(sentence)
         num %= 100
         num += 1
+        sentence = long_sentences[-num]
+        size = how_many_words(sentence)
         suf = suffix(num, size)
         context = {'stats': stats, 'sentence': sentence, 'rand_sent': rand_sent, 'book': book, 'size': size,
                    'num': num, 'suf': suf}
