@@ -22,9 +22,10 @@
     <div class="col-2-">
 <h2>&nbsp Stats of <i>{{ book.title }}</i> by {{ book.author }}</h2></div>
 <ul class="list-group">
-    <li class="list-group-item text-danger bg-info">Total number of words: {{ word_count }}</li>
-    <li class="list-group-item text-danger bg-info">Number of different words: {{ different_words }}</li>
-    <li class="list-group-item text-danger bg-info">Number of sentences: {{ sentence_count }}</li>
+    <li class="list-group-item text-white bg-info">Total number of words: {{ word_count }}</li>
+    <li class="list-group-item text-white bg-info">Number of different words: {{ different_words }}</li>
+    <li class="list-group-item text-white bg-info">Number of sentences: {{ sentence_count }}</li>
+    <li class="list-group-item text-white bg-info">Average sentence length (rounded number of words): {{ avg }}</li>
 </ul>
 <h3 class="lm-2">&nbsp Three longest sentences:</h3>
 <ol class="list-group text-white">

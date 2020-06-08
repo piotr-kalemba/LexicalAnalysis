@@ -54,12 +54,13 @@ class BookView(View):
         word_count = len(words)
         different_words = len(set(words))
         sentence_count = len(sentences)
+        avg = word_count // sentence_count
         long_sentences = get_longest_sentences(sentences)
         rand_sent = get_random_sentence(sentences)
         stl = [how_many_words(s) for s in long_sentences]
         items = list(zip(long_sentences, stl))
         context = {'word_count': word_count, 'different_words': different_words, 'sentence_count': sentence_count, \
-                   'items': items, 'rand_sent': rand_sent, 'book': book}
+                   'items': items, 'rand_sent': rand_sent, 'book': book, 'avg': avg}
         return render(request, 'book.html', context)
 
 

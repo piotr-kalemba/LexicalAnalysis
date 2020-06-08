@@ -65,49 +65,16 @@ def handle_acronyms(content):
     return content
 
 
-def shadow_invalid_stops(content):
-    """function tries to shadow all punctuation marks that signify the end of a sentence but are used in a reported
-    speech (between quotation marks), which means they may not count as the end of the sentence"""
-    content = handle_acronyms(content)
-
-    spans = []
-    pattern = r'{}'.format('"[A-Z][^"]*[.?!]"')
-
-    for item in re.finditer(pattern, content):
-        spans.append(item.span())
-
-    if spans:
-        for span in spans:
-            content = substitute(content, '.', '@', span[0], span[1] - 2)
-            content = substitute(content, '?', '&', span[0], span[1] - 2)
-            content = substitute(content, '!', '#', span[0], span[1] - 2)
-
-    spans = []
-    pattern = r'{}'.format('[.?!]"\s+[a-z]')
-
-    for item in re.finditer(pattern, content):
-        spans.append(item.span())
-
-    for span in spans:
-        content = substitute(content, '.', '@', span[0], span[0] + 2)
-        content = substitute(content, '?', '&', span[0], span[0] + 2)
-        content = substitute(content, '!', '#', span[0], span[0] + 2)
-
-    return content
-
-
 def clean_sentence(sentence):
     """function replaces shadowed punctuation marks back to the original marks"""
-    swap = zip(["#", "@", "&"], ["!", ".", "?"])
-    for pair in swap:
-        sentence = sentence.replace(pair[0], pair[1])
+    sentence = sentence.replace('@', '.')
     return sentence
 
 
 def get_sentences(content):
     """function tries to find all sentences in the content; it draws on previous auxiliary functions to exclude
     some false positives"""
-    content = shadow_invalid_stops(content)
+    content = handle_acronyms(content)
     pattern = r'[A-Z][^.?!]+[.?!]'
     sentences = re.findall(pattern, content)
     sentences = [clean_sentence(sentence) for sentence in sentences]
