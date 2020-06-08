@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from .lexical_tools import get_all_words, get_longest_sentences, get_random_sentence, get_content, how_many_words, \
-    sentence_len_freq, get_common_words, get_path, get_sentences, get_unique_words
+    sentence_len_freq, get_common_words, get_path, get_sentences, get_unique_words, suffix
 from .forms import BookForm
 from .models import Book
 from .plots import FreqChart, VocabChart
@@ -51,17 +51,40 @@ class BookView(View):
         content = get_content(book)
         words = get_all_words(content)
         sentences = get_sentences(content)
-        word_count = len(words)
-        different_words = len(set(words))
-        sentence_count = len(sentences)
-        avg = word_count // sentence_count
+        stats = [0] * 4
+        stats[0] = len(words)
+        stats[1] = len(set(words))
+        stats[2] = len(sentences)
+        stats[3] = stats[0] // stats[2]
         long_sentences = get_longest_sentences(sentences)
         rand_sent = get_random_sentence(sentences)
-        stl = [how_many_words(s) for s in long_sentences]
-        items = list(zip(long_sentences, stl))
-        context = {'word_count': word_count, 'different_words': different_words, 'sentence_count': sentence_count, \
-                   'items': items, 'rand_sent': rand_sent, 'book': book, 'avg': avg}
+        sentence = long_sentences[-1]
+        size = how_many_words(sentence)
+        context = {'stats': stats, 'sentence': sentence, 'rand_sent': rand_sent, 'book': book, 'size': size}
         return render(request, 'book.html', context)
+
+
+class BookSentView(View):
+    def post(self, request, id, num):
+        book = Book.objects.get(id=id)
+        content = get_content(book)
+        words = get_all_words(content)
+        sentences = get_sentences(content)
+        stats = [0] * 4
+        stats[0] = len(words)
+        stats[1] = len(set(words))
+        stats[2] = len(sentences)
+        stats[3] = stats[0] // stats[2]
+        long_sentences = get_longest_sentences(sentences)
+        rand_sent = get_random_sentence(sentences)
+        sentence = long_sentences[-num]
+        size = how_many_words(sentence)
+        num %= 100
+        num += 1
+        suf = suffix(num, size)
+        context = {'stats': stats, 'sentence': sentence, 'rand_sent': rand_sent, 'book': book, 'size': size,
+                   'num': num, 'suf': suf}
+        return render(request, 'book_sent.html', context)
 
 
 class PlotFreqView(View):

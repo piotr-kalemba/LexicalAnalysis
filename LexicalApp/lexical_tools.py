@@ -52,13 +52,13 @@ def handle_acronyms(content):
     pattern = r"\w\.\w(\.\w?)*"
     for item in re.finditer(pattern, content):
         span = item.span()
-        content = substitute(content, ".", "@", span[0], span[1])
+        content = substitute(content, ".", "#", span[0], span[1])
 
     pattern = r"\w+\."
-    ACRONYMS = {acr: acr.replace(".", "@") for acr in COMMON_ABBR}
-    for itermatch in re.finditer(pattern, content):
-        span = itermatch.span()
-        match = itermatch.group()
+    ACRONYMS = {acr: acr.replace(".", "#") for acr in COMMON_ABBR}
+    for item in re.finditer(pattern, content):
+        span = item.span()
+        match = item.group()
         if match in ACRONYMS.keys():
             content = substitute(content, match, ACRONYMS[match], span[0], span[1])
 
@@ -67,7 +67,7 @@ def handle_acronyms(content):
 
 def clean_sentence(sentence):
     """function replaces shadowed punctuation marks back to the original marks"""
-    sentence = sentence.replace('@', '.')
+    sentence = sentence.replace('#', '.')
     return sentence
 
 
@@ -108,7 +108,7 @@ def get_unique_words(k, lexicons):
     return list(unique_words)
 
 
-def get_longest_sentences(sentences, n=3):
+def get_longest_sentences(sentences, n=100):
     """function returns the longest sentence in the content"""
     sentences.sort(key=lambda s: how_many_words(s))
     return sentences[-n:]
@@ -123,3 +123,14 @@ def sentence_len_freq(sentences):
     return [len([length for length in sentence_len if length in range(10 * index + 1, 10 * index + 11)]) \
             for index in range(ranges_numb)]
 
+
+def suffix(num, size):
+    if num == 1:
+        suf = "st"
+    elif num == 2:
+        suf = "nd"
+    elif num == 3:
+        suf = "rd"
+    else:
+        suf = "th"
+    return "The {}'{} longest sentence of {} words: ".format(num, suf, size)

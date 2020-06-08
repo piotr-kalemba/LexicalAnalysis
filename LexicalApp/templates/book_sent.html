@@ -36,13 +36,13 @@
 <h3 class="lm-2">&nbsp Longest sentences:</h3>
 <ul class="list-group">
      <li class="list-group-item bg-info">
-         The longest sentence of {{ size }} words:
+         {{ suf }}
          <p class="font-italic text-white">
             {{ sentence }}
          </p>
      </li>
 </ul>
-<form method="post" action="{% url 'book-sent' id=book.id num=1 %}">
+<form method="post" action="{% url 'book-sent' id=book.id num=num %}">
       {% csrf_token %}
      <button type="submit" class="btn ml-3 mt-2">Next</button>
 </form>
