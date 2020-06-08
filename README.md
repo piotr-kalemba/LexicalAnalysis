@@ -1,9 +1,9 @@
 # LexicalAnalysis
-The project's goal is to provide a Django application that enables measuring some lexical metrics of a book
-or a set of books. As a user you can either upload a book (in the plain text or pdf format) which will be stored in a 
-library folder or remove any book(s) from the library. Application endpoint for a given book in addition to showing figures
+The project's goal is to provide a Django application that enables measuring some lexical metrics of a text (like the content of a book)
+or a set of texts. As a user you can either upload a text (in the plain text or pdf format) which will be stored in a 
+library folder or remove any text(s) from the library. Application endpoint for a given text in addition to showing figures
 for 'Total number of words', 'Number of different words' and 'Number of sentences' also displays 
-a random sentence and successively the longest sentences from the content (by clicking the next button). 
+a random sentence and successively (in decreasing order by clicking the next button) the longest sentences from the content. 
 In the navigation bar there is a 'Show plot' link that redirects user to a 
 view containing an image with a bar chart presenting the numbers of sentences for certain sentence-length-ranges. 
 
