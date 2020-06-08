@@ -7,6 +7,6 @@ a random sentence and successively (in decreasing order by clicking the next but
 view containing an image with a bar chart presenting the numbers of sentences for certain sentence-length-ranges. 
 
 Furthermore, there is an option for a user to compare a selected set of items from the library and see a view containing image
-with a stacked bar chart compering vocabulary sizes of the items from the set (including the size of the common
+with a stacked bar chart comparing vocabulary sizes of the items from the set (including the size of the common
 vocabulary and sizes of lexicons specific for each particular item in the group).
 
